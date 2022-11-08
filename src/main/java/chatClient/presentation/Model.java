@@ -45,7 +45,15 @@ public class Model extends java.util.Observable {
         this.setChanged();
         this.notifyObservers(properties);        
     } 
-    
+
+    public List<User> getContacts(){
+        List<User> contacts = new ArrayList<>();
+        contacts.add(new User("andres","123", "andres"));
+        contacts.add(new User("jose","123", "jose"));
+        contacts.add(new User("yiriana","123", "yiriana"));
+        return contacts;
+    }
+
     public static int USER=1;
     public static int CHAT=2;
 }

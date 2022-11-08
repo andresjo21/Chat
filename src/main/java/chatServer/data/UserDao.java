@@ -17,11 +17,12 @@ public class UserDao {
     public void create(User e) throws Exception {
         String sql = "insert into " +
                 "Usuario " +
-                "(nombreUsuario, pass) " +
-                "values(?,?)";
+                "(nombreUsuario, pass, nombre) " +
+                "values(?,?,?)";
         PreparedStatement stm = db.prepareStatement(sql);
-        stm.setString(1, e.getNombre());
+        stm.setString(1, e.getId());
         stm.setString(2, e.getClave());
+        stm.setString(3, e.getNombre());
 
         db.executeUpdate(stm);
     }
@@ -44,14 +45,15 @@ public class UserDao {
     public void update(User e) throws Exception {
         String sql = "update " +
                 "Usuario " +
-                "set nombreUsuario=?, pass=?  " +
+                "set nombreUsuario=?, pass=?, nombre=?  " +
                 "where nombreUsuario=?";
         PreparedStatement stm = db.prepareStatement(sql);
-        stm.setString(1, e.getNombre());
+        stm.setString(1, e.getId());
         stm.setString(2, e.getClave());
+        stm.setString(3, e.getNombre());
         int count = db.executeUpdate(stm);
         if (count == 0) {
-            throw new Exception("SUCURSAL NO EXISTE");
+            throw new Exception("USUARIO NO EXISTE");
         }
     }
 
@@ -72,8 +74,9 @@ public class UserDao {
 
     public User from(ResultSet rs, String alias) throws Exception {
         User e = new User();
-        e.setNombre(rs.getString(alias + ".nombreUsuario"));
+        e.setId(rs.getString(alias + ".nombreUsuario"));
         e.setClave(rs.getString(alias + ".pass"));
+        e.setNombre(rs.getString(alias + ".nombre"));
         return e;
     }
 }

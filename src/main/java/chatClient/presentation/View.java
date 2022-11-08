@@ -9,7 +9,6 @@ import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.nio.channels.ScatteringByteChannel;
 import java.util.Observer;
 
 public class View implements Observer {
@@ -25,6 +24,9 @@ public class View implements Observer {
     private JButton post;
     private JButton logout;
     private JButton registerBtn;
+    private JTable contactsTable;
+    private JTextField agregarFld;
+    private JButton agregarBtn;
 
     Model model;
     Controller controller;
@@ -40,7 +42,7 @@ public class View implements Observer {
         login.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                User u = new User("", new String(clave.getPassword()), id.getText());
+                User u = new User(id.getText(), new String(clave.getPassword()), "");
                 id.setBackground(Color.white);
                 clave.setBackground(Color.white);
                 try {
@@ -69,19 +71,25 @@ public class View implements Observer {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String text = mensaje.getText();
-                controller.post(text);
+                User receiver = model.getContacts().get(contactsTable.getSelectedRow());
+                try {
+                    controller.post(text, receiver);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         registerBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JTextField nombre = new JTextField("");
+                JTextField id = new JTextField("");
                 JTextField clave = new JTextField("");
-                Object[] fields = {"Nombre", nombre,"Clave", clave};
+                JTextField nombre = new JTextField("");
+                Object[] fields = {"Nombre Usuario", id,"Clave", clave, "Nombre", nombre};
                 int option = JOptionPane.showConfirmDialog(panel, fields, id.getText(), JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
                 if (option == JOptionPane.OK_OPTION) {
                     try {
-                        controller.register(new User(nombre.getText(), new String(clave.getText()),id.getText()));
+                        controller.register(new User(id.getText(), new String(clave.getText()),nombre.getText()));
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(panel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                     }
@@ -136,6 +144,9 @@ public class View implements Observer {
             }
             this.mensaje.setText("");
         }
+        int[] cols = {TableModel.NOMBRE};
+        contactsTable.setModel(new TableModel(cols, model.getContacts()));
+
         panel.validate();
     }
 }

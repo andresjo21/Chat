@@ -27,11 +27,13 @@ public class Controller {
         model.commit(Model.USER);
     }
 
-    public void post(String text){
+    public void post(String text, User receiver) throws Exception{
         Message message = new Message();
         message.setMessage(text);
         message.setSender(model.getCurrentUser());
+        message.setReceiver(receiver);
         ServiceProxy.instance().post(message);
+        model.getMessages().add(message);
         model.commit(Model.CHAT);
     }
 

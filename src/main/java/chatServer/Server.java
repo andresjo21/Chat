@@ -91,7 +91,10 @@ public class Server {
     
     public void deliver(Message message){
         for(Worker wk:workers){
-            wk.deliver(message);
+            if(message.getReceiver().equals(wk.user)) {
+                wk.deliver(message);
+                break;
+            }
         }        
     } 
     

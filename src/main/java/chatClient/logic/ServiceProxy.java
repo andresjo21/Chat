@@ -97,7 +97,7 @@ public class ServiceProxy implements IService{
     }
 
     // LISTENING FUNCTIONS
-   boolean continuar = true;    
+   boolean continuar = true;
    public void start(){
         System.out.println("Client worker atendiendo peticiones...");
         Thread t = new Thread(new Runnable(){

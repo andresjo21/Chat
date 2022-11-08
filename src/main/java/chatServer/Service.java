@@ -33,7 +33,7 @@ public class Service implements IService{
         //p.setNombre(p.getId()); return p;
         //verificar si el usuario existe y la contraseña es correcta en la base de datos
         UserDao userDao = new UserDao();
-        User us = userDao.read(p.getNombre());
+        User us = userDao.read(p.getId());
         if(us.getClave().equals(p.getClave())) return us;
         else throw new Exception("User does not exist");
     }

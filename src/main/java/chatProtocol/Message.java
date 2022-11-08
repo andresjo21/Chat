@@ -4,14 +4,16 @@ import java.io.Serializable;
 
 public class Message implements Serializable{
     User sender;
+    User receiver;
     String message;
 
     public Message() {
     }
 
-    public Message(User sedner,String message) {
+    public Message(User sedner,String message, User receiver) {
         this.sender = sedner;
         this.message = message;
+        this.receiver = receiver;
     }
 
     public User getSender() {
@@ -29,5 +31,6 @@ public class Message implements Serializable{
     public void setMessage(String message) {
         this.message = message;
     }
-    
+    public User getReceiver() {return receiver;}
+    public void setReceiver(User receiver) {this.receiver = receiver;}
 }

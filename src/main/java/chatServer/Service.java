@@ -6,8 +6,6 @@ import chatProtocol.Message;
 import chatServer.data.Data;
 import chatServer.data.UserDao;
 
-import java.util.List;
-
 public class Service implements IService{
 
     private Data data;
@@ -24,6 +22,13 @@ public class Service implements IService{
     public void register(User user) throws Exception {
         UserDao userDao = new UserDao();
         userDao.create(user);
+    }
+
+    @Override
+    public User checkContact(String text) throws Exception {
+        UserDao userDao = new UserDao();
+        User contactUser = userDao.read(text);
+        return contactUser;
     }
 
     public User login(User p) throws Exception {

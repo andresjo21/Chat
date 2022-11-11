@@ -96,6 +96,16 @@ public class View implements Observer {
                 }
             }
         });
+        agregarBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try {
+                    controller.addContact(agregarFld.getText());
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(panel, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
     }
 
 

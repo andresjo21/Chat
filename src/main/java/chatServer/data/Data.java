@@ -10,9 +10,6 @@ public class Data {
 
     public Data() {
         users = new ArrayList<>();
-        users.add(new User("001","001","Juan"));
-        users.add(new User("002","002","Maria"));
-        users.add(new User("003","003","Pedro"));
     }
 
     public List<User> getUsers() {

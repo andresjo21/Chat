@@ -58,4 +58,15 @@ public class Controller {
             ServiceProxy.instance().register(user);
         } catch (Exception e) {}
     }
+
+    public void addContact(String text) {
+        try {
+            ServiceProxy.instance().checkContact(text);
+        } catch (Exception e) {}
+    }
+
+    public void addContactResponse(User contact) {
+        model.contacts.add(contact);
+        model.commit(Model.CONTACT);
+    }
 }

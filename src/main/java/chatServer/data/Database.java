@@ -64,10 +64,10 @@ public class Database {
     }
 
     public ResultSet executeQuery(PreparedStatement statement) throws Exception {
-        try {
+        //try {
             return statement.executeQuery();
-        } catch (SQLException e) {
-            throw new Exception("ERROR DE BASE DE DATOS");
-        }
+        //} catch (SQLException e) {
+            //throw new Exception("ERROR DE BASE DE DATOS");
+        //}
     }
 }

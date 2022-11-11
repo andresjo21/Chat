@@ -14,6 +14,7 @@ import java.util.List;
 public class Model extends java.util.Observable {
     User currentUser;
     List<Message> messages;
+    List<User> contacts = new ArrayList<>();
 
     public Model() {
        currentUser = null;
@@ -47,13 +48,10 @@ public class Model extends java.util.Observable {
     } 
 
     public List<User> getContacts(){
-        List<User> contacts = new ArrayList<>();
-        contacts.add(new User("andres","123", "andres"));
-        contacts.add(new User("jose","123", "jose"));
-        contacts.add(new User("yiriana","123", "yiriana"));
         return contacts;
     }
 
     public static int USER=1;
     public static int CHAT=2;
+    public static int CONTACT=3;
 }

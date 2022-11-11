@@ -96,6 +96,15 @@ public class ServiceProxy implements IService{
         }
     }
 
+    @Override
+    public User checkContact(String text)throws Exception {
+        out.writeInt(Protocol.CONTACT);
+        out.writeObject(text);
+        out.flush();
+        User contact = null;
+        return contact;
+    }
+
     // LISTENING FUNCTIONS
    boolean continuar = true;
    public void start(){
@@ -126,6 +135,12 @@ public class ServiceProxy implements IService{
                         deliver(message);
                     } catch (ClassNotFoundException ex) {}
                     break;
+                case Protocol.CONTACT_RESPONSE:
+                    try{
+                        User contact=(User)in.readObject();
+                        contactResponse(contact);
+                    }catch (ClassNotFoundException ex){}
+                    break;
                 }
                 out.flush();
             } catch (IOException  ex) {
@@ -143,4 +158,12 @@ public class ServiceProxy implements IService{
       );
    }
 
+    private void contactResponse( final User contact ){
+        SwingUtilities.invokeLater(new Runnable(){
+            public void run(){
+                    controller.addContactResponse(contact);
+                }
+            }
+        );
+    }
 }

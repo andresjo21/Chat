@@ -67,7 +67,21 @@ public class Worker {
                         //service.post(message); // if wants to save messages, ex. recivier no logged on
                         System.out.println(user.getNombre()+": "+message.getMessage());
                     } catch (ClassNotFoundException ex) {}
-                    break;                     
+                    break;
+
+                case Protocol.CONTACT_RESPONSE:
+                    String userName = null;
+                    try {
+                        userName = (String)in.readObject();
+                        User contactUser = service.checkContact(userName);
+                        deliverContact(contactUser);
+                    } catch (ClassNotFoundException ex) {} catch (Exception e) {
+                        out.writeInt(Protocol.ERROR_CONTACT);
+                        throw new RuntimeException(e);
+                        //devolver el codigo de contact response, error no error
+                    }
+                    break;
+
                 }
                 out.flush();
             } catch (IOException  ex) {
@@ -81,6 +95,15 @@ public class Worker {
         try {
             out.writeInt(Protocol.DELIVER);
             out.writeObject(message);
+            out.flush();
+        } catch (IOException ex) {
+        }
+    }
+
+    public void deliverContact(User contact){
+        try {
+            out.writeInt(Protocol.CONTACT_RESPONSE);
+            out.writeObject(contact);
             out.flush();
         } catch (IOException ex) {
         }

@@ -46,12 +46,20 @@ public class Server {
                     case Protocol.LOGIN:
                         try{
                             User user = service.login((User)in.readObject());
+                            List<Message> messages = service.getMessages(user.getId());
                             out.writeInt(Protocol.ERROR_NO_ERROR);
                             out.writeObject(user);
                             out.flush();
                             Worker worker = new Worker(this,in,out,user,service);
                             workers.add(worker);
                             worker.start();
+                            if(messages.size()!=0) {
+                                for (Message m : messages) {
+                                    worker.deliver(m);
+                                }
+                                ((Service) service).deleteMessages(user.getId());
+                            }
+
                         }catch(Exception ex){
                             out.writeInt(Protocol.ERROR_LOGIN);
                             out.flush();
@@ -89,13 +97,15 @@ public class Server {
         return user;
     }
     
-    public void deliver(Message message){
+    public boolean deliver(Message message){
         for(Worker wk:workers){
             if(message.getReceiver().equals(wk.user)) {
                 wk.deliver(message);
-                break;
+                return true;
+                //break;
             }
-        }        
+        }
+        return false;
     } 
     
     public void remove(User u){

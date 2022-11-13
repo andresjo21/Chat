@@ -105,6 +105,11 @@ public class ServiceProxy implements IService{
         return contact;
     }
 
+    @Override
+    public List<Message> getMessages(String receiver) throws Exception {
+        return null;
+    }
+
     // LISTENING FUNCTIONS
    boolean continuar = true;
    public void start(){

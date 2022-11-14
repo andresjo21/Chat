@@ -14,17 +14,20 @@ public class User implements Serializable{
     String id;
     String clave;
     String nombre;
+    boolean online;
 
     public User(String id, String clave, String nombre) {
         this.id = id;
         this.clave = clave;
         this.nombre = nombre;
+        this.online = false;
     }
 
     public User() {
         this.id = "";
         this.clave = "";
         this.nombre = "";
+        this.online = false;
     }
 
     public String getId() {
@@ -76,4 +79,7 @@ public class User implements Serializable{
         return true;
     }
 
+    public boolean isOnline() {return online;}
+
+    public void setOnline(boolean online) {this.online = online;}
 }

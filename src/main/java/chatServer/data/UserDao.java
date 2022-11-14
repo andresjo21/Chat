@@ -17,12 +17,13 @@ public class UserDao {
     public void create(User e) throws Exception {
         String sql = "insert into " +
                 "Usuario " +
-                "(nombreUsuario, pass, nombre) " +
-                "values(?,?,?)";
+                "(nombreUsuario, pass, nombre, estado) " +
+                "values(?,?,?,?)";
         PreparedStatement stm = db.prepareStatement(sql);
         stm.setString(1, e.getId());
         stm.setString(2, e.getClave());
         stm.setString(3, e.getNombre());
+        stm.setBoolean(4, e.isOnline());
 
         db.executeUpdate(stm);
     }
@@ -42,15 +43,14 @@ public class UserDao {
         }
     }
 
-    public void update(User e) throws Exception {
+    public void update(User e, boolean estado) throws Exception {
         String sql = "update " +
                 "Usuario " +
-                "set nombreUsuario=?, pass=?, nombre=?  " +
+                "set estado=?  " +
                 "where nombreUsuario=?";
         PreparedStatement stm = db.prepareStatement(sql);
-        stm.setString(1, e.getId());
-        stm.setString(2, e.getClave());
-        stm.setString(3, e.getNombre());
+        stm.setBoolean(1, estado);
+        stm.setString(2, e.getId());
         int count = db.executeUpdate(stm);
         if (count == 0) {
             throw new Exception("USUARIO NO EXISTE");
@@ -77,6 +77,7 @@ public class UserDao {
         e.setId(rs.getString(alias + ".nombreUsuario"));
         e.setClave(rs.getString(alias + ".pass"));
         e.setNombre(rs.getString(alias + ".nombre"));
+        e.setOnline(rs.getBoolean(alias + ".estado"));
         return e;
     }
 }

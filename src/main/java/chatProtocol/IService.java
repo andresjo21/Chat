@@ -10,4 +10,5 @@ public interface IService {
     User checkContact(String text) throws Exception;
     public List<Message> getMessages(String receiver) throws Exception;
     public void deleteMessages(String receiver) throws Exception;
+    public void updateUser(User user,boolean estado) throws Exception;
 }

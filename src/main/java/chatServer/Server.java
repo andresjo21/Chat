@@ -51,6 +51,7 @@ public class Server {
                             out.writeObject(user);
                             out.flush();
                             Worker worker = new Worker(this,in,out,user,service);
+                            service.updateUser(user,true);
                             workers.add(worker);
                             worker.start();
 

@@ -54,6 +54,7 @@ public class Worker {
                 case Protocol.LOGOUT:
                     try {
                         srv.remove(user);
+                        service.updateUser(user,false);
                         //service.logout(user); //nothing to do
                     } catch (Exception ex) {}
                     stop();

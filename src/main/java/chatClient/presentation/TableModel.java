@@ -2,10 +2,12 @@ package chatClient.presentation;
 
 import chatProtocol.User;
 
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.util.List;
 
-public class TableModel extends AbstractTableModel implements javax.swing.table.TableModel {
+public class TableModel extends AbstractTableModel implements javax.swing.table.TableModel{
     List<User> rows;
     int[] cols;
 
@@ -25,6 +27,8 @@ public class TableModel extends AbstractTableModel implements javax.swing.table.
 
     public Class<?> getColumnClass(int col){
         switch (cols[col]){
+            case ESTADO:
+                return Boolean.class;
             default: return super.getColumnClass(col);
         }
     }
@@ -38,16 +42,19 @@ public class TableModel extends AbstractTableModel implements javax.swing.table.
         switch (cols[col]){
             case ID: return contacto.getId();
             case NOMBRE: return contacto.getNombre();
+            case ESTADO: return contacto.isOnline();
             default: return "";
         }
     }
     public static final int ID=0;
     public static final int NOMBRE=1;
+    public static final int ESTADO=2;
 
-    String[] colNames = new String[2];
+    String[] colNames = new String[3];
     private void initColNames(){
         colNames[ID]="Id";
         colNames[NOMBRE]= "Contactos";
+        colNames[ESTADO]= "Online";
     }
 
 }

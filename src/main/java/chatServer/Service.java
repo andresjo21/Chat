@@ -64,4 +64,10 @@ public class Service implements IService{
         MessageDao messageDao = new MessageDao();
         messageDao.delete(receiver);
     }
+
+    @Override
+    public void updateUser(User user, boolean estado) throws Exception {
+        UserDao userDao = new UserDao();
+        userDao.update(user,estado);
+    }
 }

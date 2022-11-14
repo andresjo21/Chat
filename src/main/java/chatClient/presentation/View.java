@@ -167,7 +167,7 @@ public class View implements Observer {
             }
             this.mensaje.setText("");
         }
-        int[] cols = {TableModel.NOMBRE};
+        int[] cols = {TableModel.NOMBRE, TableModel.ESTADO};
         contactsTable.setModel(new TableModel(cols, model.getAuxContacts()));
 
         panel.validate();

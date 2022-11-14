@@ -5,6 +5,7 @@ import chatProtocol.Message;
 import chatProtocol.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
     View view;
@@ -67,6 +68,7 @@ public class Controller {
 
     public void addContactResponse(User contact) {
         model.contacts.add(contact);
+        model.setAuxContacts();
         model.commit(Model.CONTACT);
     }
 }

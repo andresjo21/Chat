@@ -53,6 +53,9 @@ public class Server {
                             Worker worker = new Worker(this,in,out,user,service);
                             workers.add(worker);
                             worker.start();
+
+                            //Si hay mensajes pendientes se envian al usuario que se ha conectado
+                            //y luego se borran de la base de datos
                             if(messages.size()!=0) {
                                 for (Message m : messages) {
                                     worker.deliver(m);
@@ -77,6 +80,7 @@ public class Server {
                             out.flush();
                             skt.close();
                             System.out.println("Conexion cerrada...");
+                            System.out.println("Usuario ya existe...");
                         }
                        break;
                     default:

@@ -110,6 +110,9 @@ public class ServiceProxy implements IService{
         return null;
     }
 
+    @Override
+    public void deleteMessages(String receiver) throws Exception {}
+
     // LISTENING FUNCTIONS
    boolean continuar = true;
    public void start(){

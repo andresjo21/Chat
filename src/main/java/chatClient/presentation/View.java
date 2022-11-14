@@ -27,6 +27,7 @@ public class View implements Observer {
     private JTable contactsTable;
     private JTextField agregarFld;
     private JButton agregarBtn;
+    private JButton buscarBtn;
 
     Model model;
     Controller controller;
@@ -101,6 +102,18 @@ public class View implements Observer {
             public void actionPerformed(ActionEvent actionEvent) {
                 try {
                     controller.addContact(agregarFld.getText());
+                    agregarFld.setText("");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(panel, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        buscarBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try {
+                    model.searchContact(agregarFld.getText());
+                    agregarFld.setText("");
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(panel, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -155,7 +168,7 @@ public class View implements Observer {
             this.mensaje.setText("");
         }
         int[] cols = {TableModel.NOMBRE};
-        contactsTable.setModel(new TableModel(cols, model.getContacts()));
+        contactsTable.setModel(new TableModel(cols, model.getAuxContacts()));
 
         panel.validate();
     }

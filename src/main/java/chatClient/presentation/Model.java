@@ -9,16 +9,21 @@ import chatProtocol.Message;
 import chatProtocol.User;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Model extends java.util.Observable {
     User currentUser;
     List<Message> messages;
-    List<User> contacts = new ArrayList<>();
+    List<User> contacts;
+    List<User> auxContacts;
 
     public Model() {
        currentUser = null;
        messages= new ArrayList<>();
+       this.setContacts(new ArrayList<>());
+       this.setAuxContacts();
     }
 
     public User getCurrentUser() {
@@ -49,6 +54,25 @@ public class Model extends java.util.Observable {
 
     public List<User> getContacts(){
         return contacts;
+    }
+
+    public void setContacts(List<User> contacts) {
+        this.contacts = contacts;
+    }
+
+    public List<User> getAuxContacts() {
+        return auxContacts;
+    }
+
+    public void setAuxContacts() {
+        this.auxContacts = contacts;
+    }
+
+    public void searchContact(String name){
+        auxContacts = contacts.stream().filter(e->e.getNombre().contains(name)).
+                sorted(Comparator.comparing(e -> e.getNombre())).
+                collect(Collectors.toList());
+        this.commit(Model.CONTACT);
     }
 
     public static int USER=1;

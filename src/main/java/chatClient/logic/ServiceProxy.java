@@ -65,6 +65,12 @@ public class ServiceProxy implements IService{
                     controller.setContacts(data.getContactos());
                     controller.setMessages(data.getMensajes());
 
+                    for(User u2 : controller.getContacts()){
+                        out.writeInt(Protocol.UPDATE_CONTACTS);
+                        out.writeObject(u2);
+                        out.flush();
+                    }
+
                 }
                 catch(Exception e){
                     data =  new Data();

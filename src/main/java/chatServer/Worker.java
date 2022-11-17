@@ -87,6 +87,14 @@ public class Worker {
                     }
                     break;
 
+                case Protocol.UPDATE_CONTACTS:
+                    try {
+                        User contact = (User)in.readObject();
+                        srv.updateContacts(contact);
+                    } catch (ClassNotFoundException ex) {} catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                    break;
 
                 }
                 out.flush();

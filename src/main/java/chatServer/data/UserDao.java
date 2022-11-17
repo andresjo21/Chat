@@ -39,7 +39,7 @@ public class UserDao {
         if (rs.next()) {
             return from(rs, "u");
         } else {
-            throw new Exception("SUCURSAL NO EXISTE");
+            throw new Exception("USUARIO NO EXISTE");
         }
     }
 

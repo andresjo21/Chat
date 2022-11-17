@@ -26,6 +26,7 @@ public class Controller {
         User logged=ServiceProxy.instance().login(u);
         model.setCurrentUser(logged);
         model.commit(Model.USER);
+        model.commit(Model.CHAT);
     }
 
     public void post(String text, User receiver) throws Exception{
@@ -41,10 +42,9 @@ public class Controller {
     public void logout(){
         try {
             ServiceProxy.instance().logout(model.getCurrentUser());
-            model.setMessages(new ArrayList<>());
-            model.commit(Model.CHAT);
         } catch (Exception ex) {
         }
+        model.setMessages(new ArrayList<>());
         model.setCurrentUser(null);
         model.commit(Model.USER+Model.CHAT);
     }
@@ -71,4 +71,27 @@ public class Controller {
         model.setAuxContacts();
         model.commit(Model.CONTACT);
     }
+
+    // Metodos usados para guardar en XML
+    public List<Message> getMessages() {
+       return model.getMessages();
+    }
+    public List<User> getContacts() {
+        return model.getContacts();
+    }
+    public void setContacts(List<User> contacts) {
+        model.setContacts(contacts);
+    }
+    public void setMessages(List<Message> messages) {
+        model.setMessages(messages);
+    }
+    // fin de metodos usados para XML
+
+    public void updateContacts(User contact){
+            model.updateContactStatus(contact);
+            model.commit(3);
+            model.commit(Model.USER);
+            model.commit(Model.CONTACT);
+            model.commit(Model.CHAT);
+        }
 }

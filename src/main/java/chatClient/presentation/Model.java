@@ -58,6 +58,7 @@ public class Model extends java.util.Observable {
 
     public void setContacts(List<User> contacts) {
         this.contacts = contacts;
+        setAuxContacts();
     }
 
     public List<User> getAuxContacts() {
@@ -78,4 +79,9 @@ public class Model extends java.util.Observable {
     public static int USER=1;
     public static int CHAT=2;
     public static int CONTACT=3;
+
+    public void updateContactStatus(User contact){
+        User result = contacts.stream().filter(e->e.getId().equals(contact.getId())).findFirst().orElse(null);
+        if (result!=null) result.setOnline(contact.isOnline());
+    }
 }

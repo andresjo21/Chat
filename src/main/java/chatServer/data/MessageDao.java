@@ -65,7 +65,7 @@ public class MessageDao {
                 "from " +
                 "Messages m " +
                 " inner join Usuario u on m.receiver=u.nombreUsuario " +
-                " inner join Usuario u2 on m.receiver=u2.nombreUsuario " +
+                " inner join Usuario u2 on m.sender=u2.nombreUsuario " +
                 "where m.receiver like ?";
         PreparedStatement stm = db.prepareStatement(sql);
         stm.setString(1, "%" + receiver + "%");

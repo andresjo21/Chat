@@ -37,19 +37,21 @@ public class Service implements IService{
     }
 
     public User login(User p) throws Exception {
-        //for(User u:data.getUsers()) if(p.equals(u)) return u;
-        //throw new Exception("User does not exist");
-
-        //p.setNombre(p.getId()); return p;
         //verificar si el usuario existe y la contraseña es correcta en la base de datos
         UserDao userDao = new UserDao();
         User us = userDao.read(p.getId());
-        if(us.getClave().equals(p.getClave())) return us;
+        if(us.getClave().equals(p.getClave())){
+            us.setOnline(true);
+            userDao.update(us, us.isOnline());
+            return us;
+        }
         else throw new Exception("User does not exist");
     }
 
     public void logout(User p) throws Exception{
-        //nothing to do
+        UserDao userDao = new UserDao();
+        p.setOnline(false);
+        userDao.update(p, p.isOnline());
     }
 
     //Metodo que devuelve los mensajes que no se han enviado al usuario
@@ -63,11 +65,5 @@ public class Service implements IService{
     public void deleteMessages(String receiver) throws Exception{
         MessageDao messageDao = new MessageDao();
         messageDao.delete(receiver);
-    }
-
-    @Override
-    public void updateUser(User user, boolean estado) throws Exception {
-        UserDao userDao = new UserDao();
-        userDao.update(user,estado);
     }
 }

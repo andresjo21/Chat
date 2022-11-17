@@ -20,7 +20,7 @@ public class Application {
         Model model= new Model();
         View view = new View();
         Controller controller =new Controller(view, model);
-        window.setSize(500,400);
+        window.setSize(730,400);
         window.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         window.setTitle("CHAT");
         try {

@@ -50,10 +50,13 @@ public class Server {
                             out.writeInt(Protocol.ERROR_NO_ERROR);
                             out.writeObject(user);
                             out.flush();
+
                             Worker worker = new Worker(this,in,out,user,service);
-                            service.updateUser(user,true);
                             workers.add(worker);
                             worker.start();
+
+                            //Actualizar la lista de contactos de los usuarios
+                            this.updateContacts(user);
 
                             //Si hay mensajes pendientes se envian al usuario que se ha conectado
                             //y luego se borran de la base de datos
@@ -84,13 +87,20 @@ public class Server {
                             System.out.println("Usuario ya existe...");
                         }
                        break;
+
                     default:
                         break;
                 }
             } catch (IOException ex) {}
         }
     }
-    
+
+    public void updateContacts(User user) {
+        for(Worker w: workers){
+            w.updateContact(user);
+        }
+    }
+
     private User login(ObjectInputStream in,ObjectOutputStream out,IService service) throws IOException, ClassNotFoundException, Exception{
         int method = in.readInt();
         if (method!=Protocol.LOGIN) throw new Exception("Should login first");

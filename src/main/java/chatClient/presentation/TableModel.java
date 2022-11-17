@@ -2,9 +2,7 @@ package chatClient.presentation;
 
 import chatProtocol.User;
 
-import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableCellRenderer;
 import java.util.List;
 
 public class TableModel extends AbstractTableModel implements javax.swing.table.TableModel{

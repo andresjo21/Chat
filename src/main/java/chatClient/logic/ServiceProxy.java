@@ -1,5 +1,7 @@
 package chatClient.logic;
 
+import chatClient.localData.Data;
+import chatClient.localData.XmlPersister;
 import chatClient.presentation.Controller;
 import chatProtocol.User;
 import chatProtocol.Protocol;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceProxy implements IService{
+    private Data data;
     private static IService theInstance;
     public static IService instance(){
         if (theInstance==null){ 
@@ -26,7 +29,7 @@ public class ServiceProxy implements IService{
     ObjectOutputStream out;
     Controller controller;
 
-    public ServiceProxy() {           
+    public ServiceProxy() {
     }
 
     public void setController(Controller controller) {
@@ -56,6 +59,17 @@ public class ServiceProxy implements IService{
             if (response==Protocol.ERROR_NO_ERROR){
                 User u1=(User) in.readObject();
                 this.start();
+
+                try{
+                    data = XmlPersister.instance().load(u1.getId()+".xml");
+                    controller.setContacts(data.getContactos());
+                    controller.setMessages(data.getMensajes());
+
+                }
+                catch(Exception e){
+                    data =  new Data();
+                }
+
                 return u1;
             }
             else {
@@ -71,6 +85,9 @@ public class ServiceProxy implements IService{
         out.writeInt(Protocol.LOGOUT);
         out.writeObject(u);
         out.flush();
+        store();
+        controller.setContacts(new ArrayList<>());
+        controller.setMessages(new ArrayList<>());
         this.stop();
         this.disconnect();
     }
@@ -101,8 +118,8 @@ public class ServiceProxy implements IService{
         out.writeInt(Protocol.CONTACT);
         out.writeObject(text);
         out.flush();
-        User contact = null;
-        return contact;
+        //User contact = null;
+        return null;//contact;
     }
 
     @Override
@@ -112,10 +129,6 @@ public class ServiceProxy implements IService{
 
     @Override
     public void deleteMessages(String receiver) throws Exception {}
-
-    @Override
-    public void updateUser(User user, boolean estado) throws Exception {
-    }
 
     // LISTENING FUNCTIONS
    boolean continuar = true;
@@ -147,21 +160,38 @@ public class ServiceProxy implements IService{
                         deliver(message);
                     } catch (ClassNotFoundException ex) {}
                     break;
+
                 case Protocol.CONTACT_RESPONSE:
-                    try{
-                        User contact=(User)in.readObject();
-                        contactResponse(contact);
-                    }catch (ClassNotFoundException ex){}
+                    int status = in.readInt();
+                    if(status == Protocol.ERROR_NO_ERROR) {
+                        try {
+                            contactResponse((User) in.readObject());
+                        } catch (ClassNotFoundException ex) {
+                        }
+                    }
                     break;
+
+                case Protocol.UPDATE_CONTACTS:
+                    try {
+                        updateContacts((User)in.readObject());
+                    } catch (ClassNotFoundException ex) {} catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                    break;
+
                 }
                 out.flush();
             } catch (IOException  ex) {
                 continuar = false;
-            }                        
+            }
         }
     }
-    
-   private void deliver( final Message message ){
+
+    private void updateContacts(User contact){
+        controller.updateContacts(contact);
+    }
+
+    private void deliver( final Message message ){
       SwingUtilities.invokeLater(new Runnable(){
             public void run(){
                controller.deliver(message);
@@ -177,5 +207,15 @@ public class ServiceProxy implements IService{
                 }
             }
         );
+    }
+
+    public void store(){
+        try {
+            data.setMensajes(controller.getMessages());
+            data.setContactos(controller.getContacts());
+            XmlPersister.instance().store(data);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }

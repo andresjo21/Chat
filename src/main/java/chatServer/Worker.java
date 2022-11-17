@@ -53,12 +53,15 @@ public class Worker {
                 //case Protocol.LOGIN: done on accept
                 case Protocol.LOGOUT:
                     try {
+
                         srv.remove(user);
-                        service.updateUser(user,false);
-                        //service.logout(user); //nothing to do
+                        service.logout(user);
+                        srv.updateContacts(user);
+
                     } catch (Exception ex) {}
                     stop();
-                    break;                 
+                    break;
+
                 case Protocol.POST:
                     Message message=null;
                     try {
@@ -73,10 +76,9 @@ public class Worker {
                     break;
 
                 case Protocol.CONTACT_RESPONSE:
-                    String userName = null;
+                    //String userName = null;
                     try {
-                        userName = (String)in.readObject();
-                        User contactUser = service.checkContact(userName);
+                        User contactUser = service.checkContact((String)in.readObject());
                         deliverContact(contactUser);
                     } catch (ClassNotFoundException ex) {} catch (Exception e) {
                         out.writeInt(Protocol.ERROR_CONTACT);
@@ -84,6 +86,7 @@ public class Worker {
                         //devolver el codigo de contact response, error no error
                     }
                     break;
+
 
                 }
                 out.flush();
@@ -106,9 +109,19 @@ public class Worker {
     public void deliverContact(User contact){
         try {
             out.writeInt(Protocol.CONTACT_RESPONSE);
+            out.writeInt(Protocol.ERROR_NO_ERROR);
             out.writeObject(contact);
             out.flush();
         } catch (IOException ex) {
+        }
+    }
+
+    public void updateContact(User user) {
+        try {
+            out.writeInt(Protocol.UPDATE_CONTACTS);
+            out.writeObject(service.checkContact(user.getId()));
+            out.flush();
+        } catch (Exception ex) {
         }
     }
 }

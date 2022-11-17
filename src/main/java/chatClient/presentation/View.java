@@ -72,7 +72,7 @@ public class View implements Observer {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String text = mensaje.getText();
-                User receiver = model.getContacts().get(contactsTable.getSelectedRow());
+                User receiver = model.getAuxContacts().get(contactsTable.getSelectedRow());
                 try {
                     controller.post(text, receiver);
                 } catch (Exception ex) {

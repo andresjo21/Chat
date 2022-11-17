@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="Properties Chat">
     <CLASSES>
-      <root url="file://$USER_HOME$/Documentos/Progra 3/Bases de Datos/Properties Chat" />
+      <root url="file://$PROJECT_DIR$/../../Bases de Datos/Properties Chat" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

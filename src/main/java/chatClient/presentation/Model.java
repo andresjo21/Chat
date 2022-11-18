@@ -23,6 +23,7 @@ public class Model extends java.util.Observable {
     public Model() {
        currentUser = null;
        messages= new ArrayList<>();
+       currentReceiver = null;
        this.setContacts(new ArrayList<>());
        this.setAuxContacts();
     }

@@ -25,6 +25,7 @@ public class Controller {
     public void login(User u) throws Exception{
         User logged=ServiceProxy.instance().login(u);
         model.setCurrentUser(logged);
+        model.commit(3);
         model.commit(Model.USER);
         model.commit(Model.CHAT);
     }

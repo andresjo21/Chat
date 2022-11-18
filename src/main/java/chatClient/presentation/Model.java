@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 public class Model extends java.util.Observable {
     User currentUser;
+    User currentReceiver;
     List<Message> messages;
     List<User> contacts;
     List<User> auxContacts;
@@ -24,6 +25,15 @@ public class Model extends java.util.Observable {
        messages= new ArrayList<>();
        this.setContacts(new ArrayList<>());
        this.setAuxContacts();
+    }
+
+    public User getCurrentReceiver() {
+        return currentReceiver;
+    }
+
+    public void setCurrentReceiver(User currentReceiver) {
+        this.currentReceiver = currentReceiver;
+        commit(Model.CHAT);
     }
 
     public User getCurrentUser() {
@@ -84,4 +94,5 @@ public class Model extends java.util.Observable {
         User result = contacts.stream().filter(e->e.getId().equals(contact.getId())).findFirst().orElse(null);
         if (result!=null) result.setOnline(contact.isOnline());
     }
+
 }

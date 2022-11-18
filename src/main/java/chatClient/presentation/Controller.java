@@ -51,7 +51,7 @@ public class Controller {
         
     public void deliver(Message message){
         model.messages.add(message);
-        model.commit(Model.CHAT);       
+        model.commit(Model.CHAT);
     }
 
     public void register(User user) {

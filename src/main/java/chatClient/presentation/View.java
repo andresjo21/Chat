@@ -9,6 +9,8 @@ import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Observer;
 
 public class View implements Observer {
@@ -119,9 +121,18 @@ public class View implements Observer {
                 }
             }
         });
+
+        contactsTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int row = contactsTable.getSelectedRow();
+                    model.setCurrentReceiver(model.getAuxContacts().get(row));
+                }
+            }
+        });
+
     }
-
-
 
     public void setModel(Model model) {
         this.model = model;
@@ -141,7 +152,6 @@ public class View implements Observer {
     String receiverStyle = "background-color:white; margin-left:5px; margin-right:30px; margin-top:3px; padding:2px;";
 
     public void update(java.util.Observable updatedModel, Object properties) {
-
         int prop = (int) properties;
         if (model.getCurrentUser() == null) {
             Application.window.setTitle("CHAT");
@@ -157,9 +167,9 @@ public class View implements Observer {
                 this.messages.setText("");
                 String text = "";
                 for (Message m : model.getMessages()) {
-                    if (m.getSender().equals(model.getCurrentUser())) {
+                    if (m.getSender().equals(model.getCurrentUser()) && m.getReceiver().equals(model.getCurrentReceiver())) {
                         text += ("Me:" + m.getMessage() + "\n");
-                    } else {
+                    } else if(m.getSender().equals(model.getCurrentReceiver())){
                         text += (m.getSender().getNombre() + ": " + m.getMessage() + "\n");
                      }
                 }

@@ -47,7 +47,10 @@ public class Controller {
         }
         model.setMessages(new ArrayList<>());
         model.setCurrentUser(null);
+        model.setCurrentReceiver(new User());
+        model.commit(3);
         model.commit(Model.USER+Model.CHAT);
+        model.commit(Model.CHAT);
     }
         
     public void deliver(Message message){

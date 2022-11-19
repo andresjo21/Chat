@@ -64,7 +64,7 @@ public class Server {
                                 for (Message m : messages) {
                                     worker.deliver(m);
                                 }
-                                ((Service) service).deleteMessages(user.getId());
+                                service.deleteMessages(user.getId());
                             }
 
                         }catch(Exception ex){
